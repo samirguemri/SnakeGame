@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import org.samir.projects.SnakeButton?>
+
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.samir.projects.HeadController"
+      alignment="CENTER"
+      spacing="20"
+      prefHeight="100.0" prefWidth="500.0" >
+
+    <children>
+        <SnakeButton fx:id="startButton" text="Star" onAction="#startGame" />
+        <SnakeButton fx:id="stopButton" text="Stop" onAction="#stopGame" />
+        <SnakeButton fx:id="playButton" text="Play" onAction="#playGame" />
+        <SnakeButton fx:id="resetButton" text="Reset" onAction="#resetGame" />
+    </children>
+</HBox>

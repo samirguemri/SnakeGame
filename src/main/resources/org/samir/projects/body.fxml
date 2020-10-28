@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<?import javafx.scene.canvas.Canvas?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="bodyPane"
+            fx:controller="org.samir.projects.BodyController"
+            styleClass="backgroundStyle"
+            prefHeight="500.0" prefWidth="500.0" >
+    <children>
+        <Canvas fx:id="canvas" ></Canvas>
+    </children>
+    <stylesheets>
+        <URL value="@backgroundStyle.css" />
+    </stylesheets>
+</AnchorPane>

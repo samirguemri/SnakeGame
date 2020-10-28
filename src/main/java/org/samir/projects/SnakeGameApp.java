@@ -13,20 +13,22 @@ import java.io.IOException;
  */
 public class SnakeGameApp extends Application {
 
-    private static Scene scene;
+    public static Scene mainScene;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"));
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage mainStage) throws IOException {
+        mainStage.setTitle("The Snake Game");
+        mainStage.setResizable(false);
+
+        Parent mainPanel = loadFXML("mainPane");
+        mainScene = new Scene(mainPanel);
+        mainStage.setScene(mainScene);
+
+        mainStage.sizeToScene();
+        mainStage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
+    private Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SnakeGameApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
