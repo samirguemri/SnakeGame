@@ -1,17 +1,20 @@
 package org.samir.projects;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 public class Food {
 
     private int foodX;
     private int foodY;
-    private int foodHeight;
     private int foodWidth;
+    private int foodHeight;
 
-    public Food(int foodX, int foodY, int foodHeight, int foodWidth) {
+    public Food(int foodX, int foodY, int foodWidth, int foodHeight) {
         this.foodX = foodX;
         this.foodY = foodY;
-        this.foodHeight = foodHeight;
         this.foodWidth = foodWidth;
+        this.foodHeight = foodHeight;
     }
 
     public int getFoodX() {
@@ -44,5 +47,11 @@ public class Food {
 
     public void setFoodWidth(int foodWidth) {
         this.foodWidth = foodWidth;
+    }
+
+    public Rectangle getRectangle(Color color) {
+        Rectangle rectangle = new Rectangle(foodX,foodY,foodWidth,foodHeight);
+        rectangle.setFill(color);
+        return rectangle;
     }
 }

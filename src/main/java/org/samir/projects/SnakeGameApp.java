@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,22 +14,30 @@ import java.io.IOException;
  */
 public class SnakeGameApp extends Application {
 
-    public static Scene mainScene;
+    private static Scene mainScene = null;
 
     @Override
-    public void start(Stage mainStage) throws IOException {
-        mainStage.setTitle("The Snake Game");
-        mainStage.setResizable(false);
+    public void start(Stage primaryStage) throws IOException {
 
-        Parent mainPanel = loadFXML("mainPane");
-        mainScene = new Scene(mainPanel);
-        mainStage.setScene(mainScene);
+        primaryStage.setTitle("The Snake Game");
+        primaryStage.setResizable(false);
 
-        mainStage.sizeToScene();
-        mainStage.show();
+        Parent mainPane = new Pane();//loadFXML("mainPane");
+        mainScene = new Scene(mainPane);
+        primaryStage.setScene(mainScene);
+
+        new GameController();
+
+        primaryStage.sizeToScene();
+        primaryStage.show();
     }
 
-    private Parent loadFXML(String fxml) throws IOException {
+    public static Scene setSceneRootPane(Parent rootPane){
+        mainScene.setRoot(rootPane);
+        return mainScene;
+    }
+
+    public static Pane loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SnakeGameApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

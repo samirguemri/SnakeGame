@@ -1,17 +1,20 @@
 package org.samir.projects;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 public class SnakeCell {
 
     int snakeCellX;
     int snakeCellY;
-    int height;
-    int width;
+    int snakeCellWidth;
+    int snakeCellHeight;
 
-    public SnakeCell(int snakeCellX, int snakeCellY, int height, int width) {
+    public SnakeCell(int snakeCellX, int snakeCellY, int snakeCellWidth, int snakeCellHeight) {
         this.snakeCellX = snakeCellX;
         this.snakeCellY = snakeCellY;
-        this.height = height;
-        this.width = width;
+        this.snakeCellWidth = snakeCellWidth;
+        this.snakeCellHeight = snakeCellHeight;
     }
 
     public int getSnakeCellX() {
@@ -30,19 +33,26 @@ public class SnakeCell {
         this.snakeCellY = snakeCellY;
     }
 
-    public int getHeight() {
-        return height;
+    public int getSnakeCellHeight() {
+        return snakeCellHeight;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setSnakeCellHeight(int snakeCellHeight) {
+        this.snakeCellHeight = snakeCellHeight;
     }
 
-    public int getWidth() {
-        return width;
+    public int getSnakeCellWidth() {
+        return snakeCellWidth;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setSnakeCellWidth(int snakeCellWidth) {
+        this.snakeCellWidth = snakeCellWidth;
     }
+
+    public Rectangle getRectangle() {
+        Rectangle rectangle = new Rectangle(snakeCellX, snakeCellY, snakeCellWidth, snakeCellHeight);
+        rectangle.setFill(Color.BLACK);
+        return rectangle;
+    }
+
 }

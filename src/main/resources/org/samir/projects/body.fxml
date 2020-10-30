@@ -4,6 +4,7 @@
 <?import java.net.URL?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.Group?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="bodyPane"
@@ -11,7 +12,7 @@
             styleClass="backgroundStyle"
             prefHeight="500.0" prefWidth="500.0" >
     <children>
-        <Canvas fx:id="canvas" ></Canvas>
+        <Group fx:id="layer" ></Group>
     </children>
     <stylesheets>
         <URL value="@backgroundStyle.css" />

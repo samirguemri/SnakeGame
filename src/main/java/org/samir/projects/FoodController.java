@@ -4,25 +4,25 @@ import javafx.scene.paint.Color;
 
 public class FoodController {
 
-    public static Food firstFood(GameController gameController) {
+    public static Food firstFood() {
 
-        int foodX = GameController.UNIT_NUMBER * GameController.RANDOM.nextInt(GameController.WIDTH -1);
-        int foodY = GameController.UNIT_NUMBER * GameController.RANDOM.nextInt(GameController.HEIGHT -1);
+        int foodX = GameController.WIDTH * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
+        int foodY = GameController.HEIGHT * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
 
-        return new Food(foodX,foodY,15,15);
+        return new Food(foodX,foodY,20,20);
     }
 
-    public static Food newFood(GameController gameController) {
+    public static Food newFood() {
 
         int foodX;
         int foodY;
 
-        Snake snake = gameController.getSnake();
+        Snake snake = GameController.snake;
 
         start:
         while (true) {
-            foodX = GameController.UNIT_NUMBER * GameController.RANDOM.nextInt(GameController.WIDTH -1);
-            foodY = GameController.UNIT_NUMBER * GameController.RANDOM.nextInt(GameController.HEIGHT -1);
+            foodX = GameController.WIDTH * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
+            foodY = GameController.HEIGHT * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
             for (SnakeCell snakeCell : snake) {
                 if (snakeCell.getSnakeCellX() == foodX && snakeCell.getSnakeCellY() == foodY) {
                     continue start;
@@ -31,7 +31,7 @@ public class FoodController {
             GameController.SPEED++;
             break;
         }
-        return new Food(foodX,foodY,15,15);
+        return new Food(foodX,foodY,20,20);
     }
 
     public static Color randomColor(int randomColorNumber){

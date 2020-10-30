@@ -1,7 +1,7 @@
 package org.samir.projects;
 
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
+import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
 
 public class BodyController {
@@ -9,6 +9,19 @@ public class BodyController {
     @FXML
     private AnchorPane bodyPane;
     @FXML
-    private Canvas canvas;
+    private Group layer;
 
+    private GameController gameController;
+
+    public AnchorPane getBodyPane() {
+        return bodyPane;
+    }
+
+    public Group getLayer() {
+        return layer;
+    }
+
+    public GameController getGameController() {
+        return gameController;
+    }
 }
