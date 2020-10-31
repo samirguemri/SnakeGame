@@ -14,15 +14,19 @@ import java.io.IOException;
  */
 public class SnakeGameApp extends Application {
 
-    private static Scene mainScene = null;
+    public static Scene mainScene = null;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        initUI(primaryStage);
+    }
+
+    private void initUI(Stage primaryStage) throws IOException  {
 
         primaryStage.setTitle("The Snake Game");
         primaryStage.setResizable(false);
 
-        Parent mainPane = new Pane();//loadFXML("mainPane");
+        Parent mainPane = loadFXML("mainPane");
         mainScene = new Scene(mainPane);
         primaryStage.setScene(mainScene);
 

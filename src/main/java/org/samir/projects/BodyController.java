@@ -9,7 +9,7 @@ public class BodyController {
     @FXML
     private AnchorPane bodyPane;
     @FXML
-    private Group layer;
+    private Group layerId;
 
     private GameController gameController;
 
@@ -18,7 +18,7 @@ public class BodyController {
     }
 
     public Group getLayer() {
-        return layer;
+        return layerId;
     }
 
     public GameController getGameController() {

@@ -5,10 +5,12 @@ import javafx.scene.shape.Rectangle;
 
 public class Food {
 
+    private String id;
     private int foodX;
     private int foodY;
     private int foodWidth;
     private int foodHeight;
+    private Rectangle rectangle;
 
     public Food(int foodX, int foodY, int foodWidth, int foodHeight) {
         this.foodX = foodX;
@@ -49,8 +51,21 @@ public class Food {
         this.foodWidth = foodWidth;
     }
 
-    public Rectangle getRectangle(Color color) {
-        Rectangle rectangle = new Rectangle(foodX,foodY,foodWidth,foodHeight);
+    public String getId() {
+        return id;
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Rectangle toRectangle(Color color) {
+        rectangle = new Rectangle(foodX,foodY,foodWidth,foodHeight);
+        rectangle.setId(id);
         rectangle.setFill(color);
         return rectangle;
     }

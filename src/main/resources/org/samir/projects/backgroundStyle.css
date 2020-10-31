@@ -1,3 +1,5 @@
 .backgroundStyle {
+    -fx-border-width: 3;
+    -fx-border-style: solid;
     -fx-background-image : url('./background.png');
 }

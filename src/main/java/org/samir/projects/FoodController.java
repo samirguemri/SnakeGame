@@ -4,14 +4,6 @@ import javafx.scene.paint.Color;
 
 public class FoodController {
 
-    public static Food firstFood() {
-
-        int foodX = GameController.WIDTH * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
-        int foodY = GameController.HEIGHT * GameController.RANDOM.nextInt(GameController.UNIT_NUMBER );
-
-        return new Food(foodX,foodY,20,20);
-    }
-
     public static Food newFood() {
 
         int foodX;

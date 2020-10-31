@@ -5,46 +5,169 @@ import java.util.Random;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.animation.AnimationTimer;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class GameController {
 
-    static Random RANDOM = new Random();
+    public static int HEIGHT = 20;
+    public static int WIDTH = 20;
+    public static int UNIT_NUMBER = 25;
+    public static int SPEED = 5;
+    public static boolean GAME_OVER = false;
+    public static Random RANDOM = new Random();
+    public static Direction DIRECTION = Direction.DOWN;
+    public static int windowCornerSize = UNIT_NUMBER * HEIGHT;
 
-    static int HEIGHT = 20;
-    static int WIDTH = 20;
-    static int UNIT_NUMBER = 25;
+    private static Scene mainScene = null;
+    private static Group layer = null;
+    private static AnimationTimer animationTimer = null;
 
-    static boolean GAME_OVER = false;
-    static int SPEED = 5;
-    Direction DIRECTION = Direction.UP;
-
-    static Snake snake = null;
-    static Food food = null;
-
-    static Scene mainScene =null;
-    private Group layer = null;
-    private static AnimationTimer animationTimer;
+    public static Snake snake = null;
+    private static Food food = null;
+    private static Text scoreText = null;
+    private static Text gameOverText = null;
 
     public GameController() throws IOException {
 
-        Pane mainPane = SnakeGameApp.loadFXML("mainPane");
+        loadScene();
+        initializeGame();
+        animationTimer = new SnakeAnimationTimer();
 
-        mainScene = SnakeGameApp.setSceneRootPane(mainPane);
+    }
 
-        Group layer = (Group) mainScene.lookup("#layer");
-        System.out.println("GameController:group"+layer);
+    public static void drawFrame(){
+
+        if (GAME_OVER) {
+            gameOverText = new Text(100, 250,"GAME OVER");
+            gameOverText.setFill(Color.RED);
+            gameOverText.setFont(new Font("", 50));
+            gameOverText.setId("gameOverText");
+            layer.getChildren().add(gameOverText);
+            animationTimer.stop();
+            return;
+        }
+
+        /* Drawing Food */
+        if (food == null ) {
+            food = FoodController.newFood();
+            food.setId("food");
+            layer.getChildren().add(food.toRectangle(FoodController.randomColor(5)));
+        }
+
+        /* Clear Snake shapes from Layer */
+        for (SnakeCell snakeCell : snake) {
+            layer.getChildren().remove(snakeCell.getRectangle());
+        }
+
+        /* Drawing Snake */
+        for (SnakeCell snakeCell : snake) {
+            layer.getChildren().add(snakeCell.toRectangle());
+        }
+
+        /* Drawing Score*/
+        if (scoreText != null)
+            layer.getChildren().remove(scoreText);
+        scoreText = new Text(10, 30,"Score: " + (SPEED - 6));
+        scoreText.setFill(Color.YELLOW);
+        scoreText.setFont(new Font("", 30));
+        scoreText.setId("scoreText");
+        layer.getChildren().add(scoreText);
+
+        /* Self destroy */
+        for (int i = 1; i < snake.size(); i++) {
+            if (snake.get(0).getSnakeCellX() == snake.get(i).getSnakeCellX() && snake.get(0).getSnakeCellY() == snake.get(i).getSnakeCellY()) {
+                GAME_OVER = true;
+            }
+        }
+
+        /* Moving Snake body forward */
+        for (int i = snake.size() - 1; i >= 1; i--) {
+            snake.get(i).setSnakeCellX(snake.get(i-1).getSnakeCellX());
+            snake.get(i).setSnakeCellY(snake.get(i-1).getSnakeCellY());
+        }
+
+        /* Moving Snake head under DIRECTION & GAME_OVER verification */
+        int x;
+        int y;
+        switch (DIRECTION) {
+            case UP:
+                y = snake.getHead().getSnakeCellY();
+                snake.getHead().setSnakeCellY(y - HEIGHT);
+                if (y <= 0) {
+                    GAME_OVER = true;
+                }
+                break;
+            case DOWN:
+                y = snake.getHead().getSnakeCellY();
+                snake.getHead().setSnakeCellY(y + HEIGHT);
+                if (y + HEIGHT >= windowCornerSize) {
+                    GAME_OVER = true;
+                }
+                break;
+            case LEFT:
+                x = snake.getHead().getSnakeCellX();
+                snake.getHead().setSnakeCellX(x - WIDTH);
+                if (x <= 0) {
+                    GAME_OVER = true;
+                }
+                break;
+            case RIGHT:
+                x = snake.getHead().getSnakeCellX();
+                snake.getHead().setSnakeCellX(x + WIDTH);
+                if (x + WIDTH >= windowCornerSize) {
+                    GAME_OVER = true;
+                }
+                break;
+        }
+
+        /* Eating Food */
+        if (food.getFoodX() == snake.getHead().getSnakeCellX() && food.getFoodY() == snake.getHead().getSnakeCellY()) {
+            layer.getChildren().remove(food.getRectangle());
+            food = null;
+            snake.addSnakeCell(snake.getLast());
+        }
+    }
+
+    public static void loadScene(){
+        mainScene = SnakeGameApp.mainScene;
+        layer = (Group) mainScene.lookup("#layer");
+    }
+
+    private static void initializeGame() {
+
+        SPEED = 5;
+        GAME_OVER = false;
+
+        if (scoreText != null) {
+            layer.getChildren().remove(scoreText);
+            scoreText = null;
+        }
+
+        if (gameOverText != null) {
+            layer.getChildren().remove(gameOverText);
+            gameOverText = null;
+        }
+
+        if (food != null) {
+            layer.getChildren().remove(food.getRectangle());
+            food = null;
+        }
+
+        if (snake != null) {
+            for (SnakeCell snakeCell : snake) {
+                layer.getChildren().remove(snakeCell.getRectangle());
+            }
+            snake = null;
+        }
 
         /* Create Snake */
-        int snakeX = WIDTH * RANDOM.nextInt(UNIT_NUMBER );
-        int snakeY = HEIGHT * RANDOM.nextInt(UNIT_NUMBER );
+        int snakeX = WIDTH * RANDOM.nextInt(10 );
+        int snakeY = HEIGHT * RANDOM.nextInt(10 );
         snake = new Snake(snakeX,snakeY);
 
         /* Add KeyPressed event Listener to the mainScene*/
@@ -66,126 +189,24 @@ public class GameController {
                 DIRECTION = Direction.RIGHT;
             }
         });
-
-        /* Create the AnimationTimer */
-        animationTimer = new AnimationTimer(){
-            long lastTick = 0;
-
-            @Override
-            public void handle(long now) {
-                if (lastTick == 0) {
-
-                    /* Create First Food */
-                    food = FoodController.firstFood();
-                    layer.getChildren().add(food.getRectangle(Color.GREEN));
-
-                    lastTick = now;
-                    drawFrame(layer);
-
-                    return;
-                }
-                if (now - lastTick > 1000000000 / SPEED) {
-                    lastTick = now;
-                    drawFrame(layer);
-                }
-            }
-        };
-    }
-
-    private void drawFrame(Group layer){
-
-        int windowCornerSize = UNIT_NUMBER * HEIGHT;
-
-        if (GAME_OVER) {
-            Text text = new Text(100, 250,"GAME OVER");
-            text.setFill(Color.RED);
-            text.setFont(new Font("", 50));
-            layer.getChildren().add(text);
-            return;
-        }
-
-        /* Drawing Score */
-        Text scoreText = new Text(10, 30,"Score: " + (SPEED - 5));
-        scoreText.setFill(Color.WHITE);
-        scoreText.setFont(new Font("", 30));
-        layer.getChildren().add(scoreText);
-
-        /* Moving Snake body forward */
-        for (int i = snake.size() - 1; i >= 1; i--) {
-            snake.get(i).setSnakeCellX(snake.get(i-1).getSnakeCellX());
-            snake.get(i).setSnakeCellY(snake.get(i-1).getSnakeCellY());
-        }
-
-        /* Moving Snake head under DIRECTION */
-        int x;
-        int y;
-        switch (DIRECTION) {
-            case UP:
-                y = snake.getHead().getSnakeCellY();
-                snake.getHead().setSnakeCellY(y--);
-                if (y < 0) {
-                    GAME_OVER = true;
-                }
-                break;
-            case DOWN:
-                y = snake.getHead().getSnakeCellY();
-                snake.getHead().setSnakeCellY(y++);
-                if (y > windowCornerSize) {
-                    GAME_OVER = true;
-                }
-                break;
-            case LEFT:
-                x = snake.getHead().getSnakeCellX();
-                snake.getHead().setSnakeCellX(x--);
-                if (x < 0) {
-                    GAME_OVER = true;
-                }
-                break;
-            case RIGHT:
-                x = snake.getHead().getSnakeCellX();
-                snake.getHead().setSnakeCellX(x++);
-                if (x > windowCornerSize) {
-                    GAME_OVER = true;
-                }
-                break;
-        }
-
-        /* Eating Food */
-        if (food.getFoodX() == snake.getHead().getSnakeCellX() && food.getFoodY() == snake.getHead().getSnakeCellY()) {
-            snake.addSnakeCell(-1,-1);
-            FoodController.newFood();
-        }
-
-        /* Self destroy */
-        for (int i = 1; i < snake.size(); i++) {
-            if (snake.get(0).getSnakeCellX() == snake.get(i).getSnakeCellX() && snake.get(0).getSnakeCellY() == snake.get(i).getSnakeCellY()) {
-                GAME_OVER = true;
-            }
-        }
-
-        /* Drawing Food */
-        food = FoodController.newFood();
-        layer.getChildren().add(food.getRectangle(FoodController.randomColor(5)));
-
-        /* Drawing Snake */
-        for (SnakeCell snakeCell : snake) {
-            layer.getChildren().add(snakeCell.getRectangle());
-        }
     }
 
     public static void startGame(){
-        System.out.println("GameController.startGame()");
         animationTimer.start();
     }
 
     public static void playGame(){
+        animationTimer.start();
     }
 
     public static void stopGame(){
+        animationTimer.stop();
     }
 
     public static void resetGame(){
-        //animationTimer.playFromStar();
+        loadScene();
+        initializeGame();
+        animationTimer = new SnakeAnimationTimer();
     }
 
 }

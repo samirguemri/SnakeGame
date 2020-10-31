@@ -5,10 +5,14 @@ import javafx.scene.shape.Rectangle;
 
 public class SnakeCell {
 
+    private String id;
+
     int snakeCellX;
     int snakeCellY;
     int snakeCellWidth;
     int snakeCellHeight;
+
+    private Rectangle rectangle;
 
     public SnakeCell(int snakeCellX, int snakeCellY, int snakeCellWidth, int snakeCellHeight) {
         this.snakeCellX = snakeCellX;
@@ -49,10 +53,24 @@ public class SnakeCell {
         this.snakeCellWidth = snakeCellWidth;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public Rectangle getRectangle() {
-        Rectangle rectangle = new Rectangle(snakeCellX, snakeCellY, snakeCellWidth, snakeCellHeight);
+        return rectangle;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Rectangle toRectangle() {
+        rectangle = new Rectangle(snakeCellX, snakeCellY, snakeCellWidth, snakeCellHeight);
+        rectangle.setId(id);
         rectangle.setFill(Color.BLACK);
         return rectangle;
     }
+
 
 }

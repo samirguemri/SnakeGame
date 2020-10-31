@@ -13,11 +13,17 @@ public class HeadController {
     }
 
     @FXML
-    public void playGame(ActionEvent actionEvent){}
+    public void playGame(ActionEvent actionEvent){
+        GameController.playGame();
+    }
 
     @FXML
-    public void stopGame(ActionEvent actionEvent){}
+    public void stopGame(ActionEvent actionEvent){
+        GameController.stopGame();
+    }
 
     @FXML
-    public void resetGame(ActionEvent actionEvent){}
+    public void resetGame(ActionEvent actionEvent){
+        GameController.resetGame();
+    }
 }
